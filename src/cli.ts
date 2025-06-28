@@ -47,6 +47,5 @@ async function main() {
 	}
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
-	main();
-}
+// Execute main if this file is run directly
+main();
