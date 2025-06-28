@@ -14,8 +14,8 @@ async function main() {
 	const source = args[0];
 
 	try {
-		console.log("🚀 Starting crawl...");
-		console.log(`📍 Source: ${source}\n`);
+		console.error("🚀 Starting crawl...");
+		console.error(`📍 Source: ${source}\n`);
 
 		// Track progress with terminal updates
 		let lastProgress = -1;
@@ -25,20 +25,20 @@ async function main() {
 				lastProgress = progress.percentage;
 				const processed = progress.completed + progress.failed;
 
-				// Clear line and update progress
-				process.stdout.write("\r\x1b[K"); // Clear current line
-				process.stdout.write(
+				// Clear line and update progress (write to stderr)
+				process.stderr.write("\r\x1b[K"); // Clear current line
+				process.stderr.write(
 					`Progress: ${processed}/${progress.total} (${progress.percentage}%) | ✓ ${progress.completed} | ✗ ${progress.failed}`,
 				);
 			}
 		});
 
 		// Clear progress line and print result
-		process.stdout.write("\r\x1b[K");
-		console.log(result);
-		console.log("\n✅ Crawl completed successfully!");
+		process.stderr.write("\r\x1b[K");
+		console.log(result); // Only the markdown result goes to stdout
+		console.error("\n✅ Crawl completed successfully!");
 	} catch (error) {
-		process.stdout.write("\r\x1b[K"); // Clear progress line
+		process.stderr.write("\r\x1b[K"); // Clear progress line
 		console.error(
 			"❌ Error:",
 			error instanceof Error ? error.message : "Unknown error",
